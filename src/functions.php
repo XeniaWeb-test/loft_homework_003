@@ -16,8 +16,8 @@ function task1($fileName)
 
     foreach ($data->Address as $key => $val) {
         echo $val->getName() . PHP_EOL;
-        echo $val->attributes()->getName() .': ' . $val->attributes()->Type  . PHP_EOL;
-        echo  $val->Name->getName() . ': ' . $val->Name->__toString() . PHP_EOL;
+        echo $val->attributes()->getName() . ': ' . $val->attributes()->Type . PHP_EOL;
+        echo $val->Name->getName() . ': ' . $val->Name->__toString() . PHP_EOL;
         $addr = [];
         $addr[] = $val->Street->__toString();
         $addr[] = $val->City->__toString();
@@ -39,4 +39,44 @@ function task1($fileName)
     $content = ob_get_contents();
     ob_end_clean();
     echo nl2br($content);
+}
+
+/**
+ * Задание #3
+ *
+ * @param int $amount
+ * @param string $fileName
+ * @return string
+ */
+
+function task3($amount, $fileName = 'temp.csv')
+{
+    $arr = [];
+    for ($i = 0; $i < $amount; $i++) {
+        $arr[$i] = (array)rand(1, 100);
+    }
+    $handle = fopen($fileName, 'w');
+    if (!$handle) {
+        echo 'Не удалось создать файл ' . $fileName;
+        return null;
+    }
+    foreach ($arr as $row) {
+        if (!fputcsv($handle, $row, ",")) {
+            return null;
+        };
+    }
+    echo 'Запись прошла успешно! ';
+    fclose($handle);
+
+    $ret = [];
+    $handle = fopen($fileName, 'r');
+    while ($str = fgetcsv($handle, 10000, ',')) {
+        if ($str[0] % 2 == 0) {
+            $ret[] = $str[0];
+        }
+    }
+    fclose($handle);
+    $sum = array_sum($ret);
+    echo 'В массиве ' . count($ret) . ' четных чисел из ' . $amount . ' общей суммой ' . $sum;
+    return $sum;
 }
