@@ -42,6 +42,60 @@ function task1($fileName)
 }
 
 /**
+ * Задание #2
+ * @param array $arr
+ * @param string $fileNameBefore
+ * @param string $fileNameAfter
+ * @return
+ */
+
+function task2_1($arr, $fileNameBefore = 'output.json', $fileNameAfter = 'output2.json')
+{
+    $json = json_encode($arr);
+    $handle = fopen($fileNameBefore, 'w');
+    if (!$handle) {
+        echo 'Не удалось создать файл ' . $fileNameBefore;
+        return null;
+    }
+    if (!fwrite($handle, $json)) {
+        echo "Не могу произвести запись в файл.";
+        return null;
+    }
+    echo 'Запись в файл прошла успешно';
+    fclose($handle);
+
+    $handle = fopen($fileNameAfter, 'w');
+    if (!$handle) {
+        echo 'Не удалось открыть файл ' . $fileNameBefore;
+        return null;
+    }
+
+    if (rand(0, 20) < 10 ) {
+        $str = file_get_contents($fileNameBefore);
+        $tempArr = json_decode($str, true);
+        shuffle($tempArr);
+        $jsonNew = json_encode($tempArr);
+    }
+    if (isset($jsonNew)) {
+        echo 'Данные меняли!'; // временный маркер
+        $json = $jsonNew;
+    }
+
+    if (!fwrite($handle, $json)) {
+        echo "Не могу произвести запись в файл.";
+        return null;
+    }
+    fclose($handle);
+
+    $beforeArr = json_decode(file_get_contents($fileNameBefore), true);
+    $afterArr = json_decode(file_get_contents($fileNameAfter), true);
+
+    $diffArr = array_diff_assoc ($beforeArr, $afterArr);
+    var_dump($diffArr);
+    return $diffArr;
+}
+
+/**
  * Задание #3
  *
  * @param int $amount
