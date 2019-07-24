@@ -28,7 +28,6 @@ $activity = [
         'social'
     ]
 ];
-var_dump(task2_1($activity));
-
+task2_1($activity);
 
 task3(80);
