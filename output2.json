@@ -1,1 +1,1 @@
-[{"maths":["algebra","geometry","trigonometry"],"chemistry":["organic","inorganic"],"physics":"physics","biology":"biology"},["painting","music","theater","sculpture"],["external","social"]]
+[["painting","music","theater","sculpture"],["external","social"],{"maths":["algebra","geometry","trigonometry"],"chemistry":["organic","inorganic"],"physics":"physics","biology":"biology"}]

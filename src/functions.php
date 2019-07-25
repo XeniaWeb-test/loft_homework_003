@@ -7,7 +7,6 @@
 
 function task1($fileName)
 {
-    ob_start();
     $data = simplexml_load_file($fileName);
 
     foreach ($data->attributes() as $attr) {
@@ -36,9 +35,6 @@ function task1($fileName)
         echo 'Comments: ' . $product->Comment->__toString() . PHP_EOL;
         echo 'Shipping Date: ' . $product->ShipDate->__toString() . PHP_EOL . PHP_EOL;
     }
-    $content = ob_get_contents();
-    ob_end_clean();
-    echo nl2br($content);
 }
 
 /**
@@ -58,10 +54,10 @@ function task2_1($arr, $fileNameBefore = 'output.json', $fileNameAfter = 'output
         return null;
     }
     if (!fwrite($handle, $json)) {
-        echo "Не могу произвести запись в файл.";
+        echo "Не могу произвести запись в файл." . PHP_EOL;
         return null;
     }
-    echo 'Запись в файл прошла успешно';
+    echo 'Запись в файл прошла успешно' . PHP_EOL;
     fclose($handle);
 
     $handle = fopen($fileNameAfter, 'w');
@@ -77,12 +73,12 @@ function task2_1($arr, $fileNameBefore = 'output.json', $fileNameAfter = 'output
         $jsonNew = json_encode($tempArr);
     }
     if (isset($jsonNew)) {
-        echo 'Данные меняли!'; // временный маркер
+        echo 'Данные изменены!' . PHP_EOL;
         $json = $jsonNew;
     }
 
     if (!fwrite($handle, $json)) {
-        echo "Не могу произвести запись в файл.";
+        echo "Не могу произвести запись в файл." . PHP_EOL;
         return null;
     }
     fclose($handle);
@@ -91,7 +87,6 @@ function task2_1($arr, $fileNameBefore = 'output.json', $fileNameAfter = 'output
     $afterArr = json_decode(file_get_contents($fileNameAfter), true);
 
     $diffArr = array_diff_assoc ($beforeArr, $afterArr);
-    var_dump($diffArr);
     return $diffArr;
 }
 
@@ -131,6 +126,29 @@ function task3($amount, $fileName = 'temp.csv')
     }
     fclose($handle);
     $sum = array_sum($ret);
-    echo 'В массиве ' . count($ret) . ' четных чисел из ' . $amount . ' общей суммой ' . $sum;
+    echo 'В массиве ' . count($ret) . ' четных чисел из ' . $amount . ' общей суммой ' . $sum . PHP_EOL;
     return $sum;
+}
+
+/**
+ * Задание #4
+ * @param string $link
+ */
+
+function task4_1($link)
+{
+    $json = file_get_contents($link);
+    $data = json_decode($json, true);
+    $idNum = $data['query']['pages']['15580374'];
+    echo 'title: ' . $idNum['title'] . PHP_EOL;
+    echo 'pageid: ' . $idNum['pageid'] . PHP_EOL;
+}
+
+function task4_2($link)
+{
+    $json = file_get_contents($link);
+    $data = json_decode($json);
+    $numOfSite = '15580374';
+    echo 'title: ' . $data->query->pages->$numOfSite->title . PHP_EOL;
+    echo 'pageid: ' . $data->query->pages->$numOfSite->pageid . PHP_EOL;
 }
